@@ -1,8 +1,7 @@
 @import url("customDrawBox.css");
 /*form*/
 .solutions-widget-batcheditor .widget-draw-control {
-    margin: 0 15px 5px 15px;
-    padding-right: 15px;
+    margin: 12px -5px 0px 5px;
 }
 
 
@@ -11,21 +10,22 @@
 }
 
 .solutions-widget-batcheditor .widget-intro {
-    margin: 0 10px 0 10px;
+    margin: 0px 5px 20px 5px;
     font-size: 14px;
-    line-height: 150%;
+    color: #777777;
+    line-height:150%;
 }
 
 /*shared*/
 .solutions-widget-batcheditor .widget-error {
-    font-size: 1.1em;
-    color: orangered;
+    font-size: 14px;
+    color: #8A0808;
 }
 .solutions-widget-batcheditor td.simple-table-td.normal-text-td.syncProcessing {
   color:mediumorchid;
 }
 .solutions-widget-batcheditor td.simple-table-td.normal-text-td.syncComplete {
-    color: blue;
+    color: #777777;
 }
 .solutions-widget-batcheditor td.simple-table-td.normal-text-td.syncSkipped {
     color: orange;
@@ -33,8 +33,8 @@
 
 /*Layers Results*/
 .solutions-widget-batcheditor .widget-layers-table {
-    margin: 5px 5px 0 5px;
-    padding-right: 5px;
+    margin: 0px -15px 0px -15px;
+    padding-right: 0px;
     font-size: 12px;
 }
 
@@ -43,16 +43,16 @@
 }
 
 .solutions-widget-batcheditor td.simple-table-td.normal-text-td.maxRecordCount {
-    color: orangered;
+    color: #8A0808;
 }
 
 .solutions-widget-batcheditor .layerInIntro {
     font-weight: bold;
-        color: blue;
+    color: #000000;
 }
 
 .solutions-widget-batcheditor .maxRecordInIntro {
-    color: orangered;
+    color: #8A0808;
     font-weight: bold;
 }
 /*Loading Message*/
@@ -78,18 +78,26 @@
 }
 
 .solutions-widget-batcheditor .clearBtn {
-    margin-right: 25px;
+    margin-right: 5px;
     float: right !important;
     display: inline-block !important;
 }
 
 .solutions-widget-batcheditor .widget-results {
-    font-size: 1.1em;
-    color: blue;
+    font-size: 14px;
+    font-weight: italic;
+    color: #777777;
     margin-left:15px;
+    margin-bottom: 10px;
 }
 
 .solutions-widget-batcheditor .filtered {
   color: #000000;
   font-weight: bold;
+}
+
+.jimu-simple-table .simple-table-title {
+	color: #000000;
+	font-weight: bold;
+	background-color: #E3E3E3;
 }

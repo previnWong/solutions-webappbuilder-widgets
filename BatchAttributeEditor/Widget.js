@@ -1,15 +1,14 @@
-/// <reference path="../basemapgallery/widget.html" />
 ///////////////////////////////////////////////////////////////////////////
-// Copyright � 2014 Esri. All Rights Reserved.
+// Copyright © 2015 Esri. All Rights Reserved.
 //
-// Licensed under the Apache License Version 2.0 (the 'License');
+// Licensed under the Apache License Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
 // You may obtain a copy of the License at
 //
-//  http://www.apache.org/licenses/LICENSE-2.0
+//    http://www.apache.org/licenses/LICENSE-2.0
 //
 // Unless required by applicable law or agreed to in writing, software
-// distributed under the License is distributed on an 'AS IS' BASIS,
+// distributed under the License is distributed on an "AS IS" BASIS,
 // WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 // See the License for the specific language governing permissions and
 // limitations under the License.
@@ -30,7 +29,6 @@ define([
     'dojo/dom-class',
     'dojo/query',
     'dojo/promise/all',
-    'dojo/dom-class',
     'dojo/string',
     'jimu/BaseWidget',
     'jimu/dijit/SimpleTable',
@@ -46,6 +44,8 @@ define([
     'esri/tasks/query',
     'esri/symbols/jsonUtils',
     'esri/toolbars/draw',
+    'esri/geometry/geometryEngine',
+    'esri/geometry/scaleUtils',
     'dojox/timing',
      'jimu/dijit/Message',
     './customDrawBox',
@@ -66,7 +66,6 @@ function (declare,
           domClass,
           query,
           all,
-          domClass,
           string,
           BaseWidget,
           SimpleTable,
@@ -82,6 +81,8 @@ function (declare,
           EsriQuery,
           symbolJsonUtils,
           draw,
+          geometryEngine,
+          scaleUtils,
           Timer,
           Message,
           DrawBox,
@@ -111,19 +112,22 @@ function (declare,
     },
     postCreate : function() {
       this.inherited(arguments);
-      this.expressionLayers = [],
-      this.clickList = [],
-      this._configureWidget();
-      this._initSelectLayer();
-      this.createLayerTable();
-      this.loadLayerTable();
-      this._addHelperLayer();
-      this._createAttributeInspector();
-      this._createQueryParams();
-      this._setTheme();
-      this.timer = new Timer.Timer(20000);
-      //dojo.connect(this.timer, "onTick", this, this._timerComplete);
-      this.own(aspect.after(this.timer, "onTick", lang.hitch(this,this._timerComplete), this));
+      console.log(this.config.updateLayers);
+      if(this.config.updateLayers.length > 0) {
+        this.expressionLayers = [];
+        this.clickList = [];
+        this._configureWidget();
+        this._initSelectLayer();
+        this.createLayerTable();
+        this.loadLayerTable();
+        this._addHelperLayer();
+        this._createAttributeInspector();
+        this._createQueryParams();
+        this._setTheme();
+        this.timer = new Timer.Timer(20000);
+        //dojo.connect(this.timer, "onTick", this, this._timerComplete);
+        this.own(aspect.after(this.timer, "onTick", lang.hitch(this, this._timerComplete), this));
+      }
 
     },
     _initSelectLayer : function() {
@@ -263,9 +267,15 @@ function (declare,
     _selectInShape : function(shape, searchValue) {
       this._clearResults(true);
       var defs = {};
+      var rowData;
       var q = new EsriQuery();
       if (shape !== null) {
-        q.geometry = shape;
+        if(shape.type === "point" || shape.type === "polyline") {
+          var mapUnit = scaleUtils.getUnitValueForSR(this.map.spatialReference);
+          q.geometry = geometryEngine.buffer(shape,10,mapUnit);
+        } else {
+          q.geometry = shape;
+        }
       }
       var fields;
       var selectedLayers = [];
@@ -441,11 +451,11 @@ function (declare,
       if (graphic.geometryType === "esriGeomtryTypePoint") {
         this.mouseClickPos = graphic;
       } else {
-        if (graphic.geometry.type == "extent") {
+        if (graphic.geometry.type === "extent") {
           this.mouseClickPos = graphic.geometry.getCenter();
-        } else if (graphic.geometry.type == "polygon") {
+        } else if (graphic.geometry.type === "polygon") {
           this.mouseClickPos = graphic.geometry.getCentroid();
-        } else if (graphic.geometry.type == "polyline") {
+        } else if (graphic.geometry.type === "polyline") {
           this.mouseClickPos = graphic.geometry.getExtent().getCenter();
         } else {
           this.mouseClickPos = graphic.geometry;
@@ -554,6 +564,11 @@ function (declare,
     },
     createLayerTable : function() {
       var layerTableFields = [{
+        name : 'spacer',
+        type : 'text',
+        title: '',
+        width : 15
+      }, {
         name : 'isSelectable',
         title : "",
         type : 'checkbox',
@@ -561,7 +576,7 @@ function (declare,
         width : 30
       }, {
         name : 'actions',
-        title : '<img src="'+ this.folderUrl +'css/images/filter.png" width=16 height=16>',
+        title : '<img src="' + this.folderUrl + 'css/images/filter.png" width=16 height=16>',
         type : 'actions',
         actions : ['edit'],
         width : 25
@@ -728,6 +743,7 @@ function (declare,
     },
     // Create the attribute inspector
     _createAttributeInspector : function() {
+      var attrInspector;
       var layerInfos = [{
         'featureLayer' : this.helperLayer,
         'isEditable' : true,
@@ -735,7 +751,7 @@ function (declare,
         'fieldInfos' : this.helperEditFieldInfo
       }];
       try {
-        var attrInspector = new AttributeInspector({
+        attrInspector = new AttributeInspector({
           layerInfos : layerInfos,
           _hideNavButtons : true
         }, domConstruct.create('div'));
@@ -842,7 +858,7 @@ function (declare,
       array.forEach(this.layersTable.getRows(), function(row) {
 
         rowData = this.layersTable.getRowData(row);
-        if (rowData.isSelectable == true) {
+        if (rowData.isSelectable === true) {
           selectedLayers.push(rowData.label);
         } else {
           this.layersTable.editRow(row, {
@@ -954,8 +970,10 @@ function (declare,
     },
     applyErrorback : function(chunks, idx, layer) {
       return function(err) {
-
         console.log(err);
+        console.log(chunks);
+        console.log(idx);
+        console.log(layer);
         return err;
       };
     },
@@ -1046,7 +1064,7 @@ function (declare,
         layer.layerObject.clearSelection();
       }, this);
       array.forEach(this.clickList, function(evt) {
-          evt.remove();
+        evt.remove();
       });
       this.clickList = [];
 
@@ -1171,9 +1189,9 @@ function (declare,
 
               var labelCell = query('.label', pTR).shift();
               if(expression.expr.expr !== '1=1') {
-                domClass.add(labelCell,'filtered');
+                domClass.add(labelCell, 'filtered');
               } else {
-                domClass.remove(labelCell,'filtered');
+                domClass.remove(labelCell, 'filtered');
               }
 
               filterPopup.close();
@@ -1244,9 +1262,9 @@ function (declare,
         }));
       }));
       this.expressionLayers = [];
-      array.forEach(this.layersTable.getRows(), lang.hitch(this,function(row) {
+      array.forEach(this.layersTable.getRows(), lang.hitch(this, function(row) {
         var labelCell = query('.label', row).shift();
-        domClass.remove(labelCell,'filtered');
+        domClass.remove(labelCell, 'filtered');
       }));
 
     },
@@ -1261,7 +1279,7 @@ function (declare,
 
     destroy : function() {
       array.forEach(this.clickList, function(evt) {
-          evt.remove();
+        evt.remove();
       });
       this._clearGraphics();
 
@@ -1282,8 +1300,8 @@ function (declare,
       this.searchTextBox = null;
       this.mouseClickPos = null;
       this.selectQuery = null;
-      this.expressionLayers = null,
-      this.drawnGrph = null,
+      this.expressionLayers = null;
+      this.drawnGrph = null;
       this.timer = null;
 
       this.inherited(arguments);
