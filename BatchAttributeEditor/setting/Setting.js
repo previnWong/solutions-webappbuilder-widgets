@@ -174,7 +174,7 @@ define([
          dojo.connect(this.btnCancel, "onclick", lang.hitch(this, this.cancelSymbol));
          */
 
-        this.btnErrorMsg = domConstruct.toDom("<div class='settings-error hide'></div>");
+        this.btnErrorMsg = domConstruct.toDom("<div class='batcheditor-settings-error hide'></div>");
         /*
          domConstruct.place(this.btnNext, btnBar, "after");
          domConstruct.place(this.btnBack, this.btnNext, "after");
@@ -253,7 +253,7 @@ define([
         if (this.controlsAddedToWidgetFrame) {
           this.btnErrorMsg.innerHTML = this.nls.page2.noLayersSelected;
           html.removeClass(this.btnErrorMsg, 'hide');
-          this.tabContainer.onSelect(this.nls.tabs.layers);
+          this.tabContainer.selectTab(this.nls.tabs.layers);
         } else {
           domStyle.set(this.settingsSecondPageError, 'display', '');
         }

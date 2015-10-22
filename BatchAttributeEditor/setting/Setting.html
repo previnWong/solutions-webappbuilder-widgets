@@ -62,15 +62,13 @@
         <div class="settings-heading" data-dojo-attach-point="layersToolHeader">${nls.page2.layersToolHeader}</div>
         <div class="settings-description" data-dojo-attach-point="layersToolDesc">${nls.page2.layersToolDesc}</div>
 
-        <div class="setting-layer-table" data-dojo-attach-point="tableLayerInfos"></div><br />
-        <div>
-
+        <div class="setting-layer-table" data-dojo-attach-point="tableLayerInfos"></div>
+        <div data-dojo-attach-point="tableLayerInfosError" class="settings-nolayer-error" style="display:none">${nls.page2.noEditableLayers}</div>
+        <div class="setting-layer-toggle-checkbox-group">
             <div class="setting-layer-toggle-checkbox" data-dojo-type="dijit/form/CheckBox" data-dojo-attach-point="toggleLayers"></div>
             <span>${nls.page2.toggleLayers}</span>
         </div>
 
-
-        <div data-dojo-attach-point="tableLayerInfosError" class="settings-error" style="display:none">${nls.page2.noEditableLayers}</div><br />
         <table class="settings-navigation-table" data-dojo-attach-point="pageTwoControls" cellspacing="0">
             <tbody>
 

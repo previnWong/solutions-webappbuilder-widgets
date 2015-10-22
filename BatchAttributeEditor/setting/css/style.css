@@ -24,19 +24,34 @@
 }
 
 /*Shared Page*/
-.settings-heading{
-  font-weight: bold;
+.solutions-widget-batcheditor-setting .settings-heading{
   font-size: 14px;
   margin-top: 15px;
+  color: #2b2d39;
 }
-.settings-description {
+.solutions-widget-batcheditor-setting .settings-description {
   font-size: 12px;
   margin-top: 15px;
+  margin-left: 10px;
+  color: #2b2d39;
 }
-.settings-error {
+.solutions-widget-batcheditor-setting .settings-error {
   font-size: 12px;
-  color: orangered;
+  font-style: italic;
+  color: #999999;
 }
+.solutions-widget-batcheditor-setting .settings-nolayer-error {
+  font-size: 12px;
+  font-style: italic;
+  color: #999999;
+  margin-left: 10px;
+}
+.batcheditor-settings-error {
+  font-size: 12px;
+  font-style: italic;
+  color: #999999;
+}
+
 /*Navigation Buttons*/
 .solutions-widget-batcheditor-setting .settings-navigation-table > tbody > tr > .controls{
   width:100%;
@@ -49,36 +64,41 @@
 
 /*Page 1*/
 .solutions-widget-batcheditor-setting .setting-tool-table{
-  margin:15px;
-  padding-right:15px;
-  outline: #000000 solid thin;
+	margin-top: 20px;
+	margin-left: 10px;
+  border-width: 0px;
 }
 .solutions-widget-batcheditor-setting .setting-tool-table > tbody > tr > .controls{
   width:100%;
 }
 .solutions-widget-batcheditor-setting .setting-tool-table > tbody > tr > td > span{
-  margin-left: 20px;
+  margin-left: 5px;
 }
 .solutions-widget-batcheditor-setting .setting-tool-table > tbody > tr > td > input{
-  margin-left: 5px
+  margin-left: 0px
 }
 .solutions-widget-batcheditor-setting  .setting-tool-table > thead > tr > th,
 .solutions-widget-batcheditor-setting  .setting-tool-table > tbody > tr > td{
-  height:40px;
-  line-height:40px;
+  line-height: 22px;
   vertical-align:middle;
-  font-size: 1em;
+  font-size: 12px;
 }
 
 /*Page 2*/
 .solutions-widget-batcheditor-setting .setting-layer-table{
-  margin:15px;
-  padding-right:15px;
+  margin-left: 10px;
+  margin-top: 20px;
+  margin-bottom: 20px;
 
 }
+.solutions-widget-batcheditor-setting .setting-layer-toggle-checkbox-group {
+  margin-left: 10px;
+  margin-top: 10px;
+  font-size: 12pt;
+  color: #2b2d39;
+}
 .solutions-widget-batcheditor-setting .setting-layer-toggle-checkbox {
-     margin-right: 10px;
-  margin-left: 22px;
+  margin-left: 0px;
 }
 
 /*Page 3*/

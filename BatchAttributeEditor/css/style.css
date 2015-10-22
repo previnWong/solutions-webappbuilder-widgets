@@ -101,3 +101,17 @@
 	font-weight: bold;
 	background-color: #E3E3E3;
 }
+
+.jimu-icon-edit {
+	background-image: url(../css/images/edit_gray_normal.png);
+    background-position: 0px 0px;
+    width: 16px;
+    height: 16px;
+}
+
+.jimu-icon-edit:hover {
+	background-image: url(../css/images/edit_gray_hover.png);
+    background-position: 0px 0px;
+    width: 16px;
+    height: 16px;
+}

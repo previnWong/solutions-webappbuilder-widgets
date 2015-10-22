@@ -329,7 +329,12 @@ function (declare,
     },
     _selectSearchLayer : function(shape) {
       var q = new EsriQuery();
-      q.geometry = shape;
+      if(shape.type === "point" || shape.type === "polyline") {
+        var mapUnit = scaleUtils.getUnitValueForSR(this.map.spatialReference);
+        q.geometry = geometryEngine.buffer(shape,10,mapUnit);
+      } else {
+        q.geometry = shape;
+      }
       if (this.toolType === "FeatureQuery") {
         q.outFields = [this.config.selectByLayer.queryField];
       }
